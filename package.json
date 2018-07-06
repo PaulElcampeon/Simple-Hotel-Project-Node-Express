@@ -1,0 +1,19 @@
+{
+  "name": "hotelproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node index.js"
+  },
+  "author": "Paul Greg",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
