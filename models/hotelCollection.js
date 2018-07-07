@@ -15,6 +15,12 @@ class HotelCollection{
         });
         return this.hotels;
     }
+
+    removeHotel(hotelUrl){
+        this.hotels = this.hotels.filter(function(obj) {//once it receives the request it assigns the hotel list in the hotelCollections obj to a new list without the specified hotel
+            return "/hotels/"+obj.urlSlug != hotelUrl;
+          });
+    }
 }
 
 module.exports = HotelCollection

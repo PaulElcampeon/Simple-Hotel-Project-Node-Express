@@ -18,32 +18,33 @@ app.get("/", function(request,response){//waiting for a get request to the home 
     response.sendFile("index.html", {root: __dirname+"/files"});
 });
 
+
 app.post("/", function(request,response){//waiting for a post request from the end url (/) one it receives the request it makes a new hotel object and adds it to the hotelCollection obj
     let tempHotel = new Hotel(request.fields.name,request.fields.city);
     hotelCollection.add(tempHotel);
     response.sendFile("index.html", {root: __dirname+"/files"});
 });
 
+
 app.get("/hotels", function(request,response){//waiting for a get request to the end url (/hotels) once it gets a request it sends the hotelCollection obj
     response.send(hotelCollection);
 })
 
 
-
-app.get(/^\/(hotels)\/(.+)/, function(request,response){//waiting for a get request to the end url (/hotels/hotel.urlslug)
+app.get(/\/hotels\/?\/.+/, function(request,response){//waiting for a get request to the end url (/hotels/hotel.urlslug)
     for(let hotels of hotelCollection.hotels){//once it receives the request it returns that particular hotel
-        if(hotels.urlSlug == request.params[1]){
+        if("/hotels/"+hotels.urlSlug == request.url){//using the requesturl as a comparison
+            console.log(hotels)
             response.send(hotels)
         }
     }
 })
 
-app.delete(/^\/(hotels)\/(.+)/, function(request,response){//waiting for a delete request to the end url (/hotels/hotel.urlslug)
-    hotelCollection.hotels = hotelCollection.hotels.filter(function(obj) {//once it receives the request it assigns the hotel list in the hotelCollections obj to a new list without the specified hotel
-        return obj.urlSlug != request.params[1];
-      });
+app.delete(/^\/hotels\//, function(request,response){//waiting for a delete request to the end url (/hotels/hotel.urlslug)
+    hotelCollection.removeHotel(request.url);
     response.send(hotelCollection)
 })
+
 
 app.listen(3000,function(){//our server is listening on port 3000
     console.log("I am listening on port 3000");
