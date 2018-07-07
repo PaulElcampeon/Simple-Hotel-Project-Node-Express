@@ -4,14 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Hotel Rater</title>
+    <link rel="stylesheet" href="/cssFiles/index.css">
 </head>
 <body>
-    <form action="/hotels" Method="POST">
-        <input type="text" name="name"><br>
-        <input type="text" name="city"><br>
-        <input type="submit" value="send">
-    </form>
+    <div id="bodywrapper">
+        
+        <div id="title">
+            <h1>Welcome to Hotel Rater</h1>
+        </div>
+        
+        <div id="rateform">
+            <form action="/" Method="POST">
+                <h1>Name of Hotel</h1><br>
+                <input type="text" name="name"><br>
+                <h1>Location of Hotel</h1><br>
+                <input type="text" name="city"><br><br>
+                <input type="submit" value="ADD">
+            </form>
+        </div>
+        <br>
+        <button id="btn1">List Hotels in DataBase</button>
+        <br>
+
+        <div id="hotel-container"></div>
+            <!-- <form action="/hotels/hilton_metropole_london" Method="DELETE">
+                <br><br><input type="submit" name="hilton_metropole_london" value="Delete">
+            </form> -->
+        
     
+    </div>
+    
+    
+    
+    <script src="/cssFiles/script.js" type="text/javascript"></script>
 </body>
 </html>

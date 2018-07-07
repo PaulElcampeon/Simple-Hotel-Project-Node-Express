@@ -5,6 +5,7 @@ class Hotel {
         this.reviewList = [];
         this.reviewCount = 0
         this.averageRating =0;
+        this.urlSlug = this.createUrlSlug();
         //this.averageRatingAsStars = this.averageRatingAsStars();
     }
 
@@ -41,7 +42,7 @@ class Hotel {
         return starString;
     }
     
-    urlSlug(){
+    createUrlSlug(){
         let tempName = this.name.split(" ").join("_").toLowerCase();
         let tempCity = this.city.split(" ").join("_").toLowerCase();
         return tempName+"_"+tempCity;
