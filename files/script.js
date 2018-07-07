@@ -20,8 +20,6 @@ function addHotelsToPage (data) {//function to append the data received from the
     console.log(data)
     document.getElementById("hotel-container").innerHTML="";
     for (var hotelsx of data.hotels) {
-            // console.log(hotelsx)
-            // console.log(hotelsx.urlSlug)
             var postDiv         = document.createElement('div');
             var postText        = document.createElement('p');
             var btnGet          = document.createElement("button");
@@ -53,7 +51,7 @@ function addHotelsToPage (data) {//function to append the data received from the
 }
 
 function addHotelToPage (data) {//function to append the data received from the response from the getHotels() get call
-    //console.log(data)
+    console.log(data)
     document.getElementById("hotel-container").innerHTML="";
 
 
@@ -88,10 +86,9 @@ function addHotelToPage (data) {//function to append the data received from the 
 
 
 function getHotel(url){//makes a call to the server to get a particular hotel in the hotelCollection obj
-    //console.log(url);
     fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
         response.json().then(function (json) {console.log(json);
-            addSingleHotelToPage(response);
+            addSingleHotelToPage(json);
     });
 })
     .catch(function (err) {console.error(err)});
@@ -99,16 +96,9 @@ function getHotel(url){//makes a call to the server to get a particular hotel in
 
 
 function addSingleHotelToPage(data){
-    //document.getElementById("hotel-container").innerHTML="";
-
-    // let d = document.getElementById("hotel-container");
-    // while(d.firstChild){
-    //     d.removeChild(d.firstChild);
-    // }
-    
+    console.log(data);
+    document.getElementById("hotel-container").innerHTML="";
     addHotelToPage(data);
-    //console.log(data);
-
 }
 
 
