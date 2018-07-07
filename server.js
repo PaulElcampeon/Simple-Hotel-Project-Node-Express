@@ -20,7 +20,7 @@ app.get("/", function(request,response){//waiting for a get request to the home 
 
 app.post("/", function(request,response){//waiting for a post request from the end url (/)
     let tempHotel = new Hotel(request.fields.name,request.fields.city);
-    hotelCollection.hotels.add(tempHotel);
+    hotelCollection.add(tempHotel);
     //console.log("You have just added "+tempHotel)
     response.sendFile("index.html", {root: __dirname+"/files"});
 });
