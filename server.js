@@ -20,12 +20,12 @@ app.get("/", function(request,response){//waiting for a get request to the home 
 
 app.post("/", function(request,response){//waiting for a post request from the end url (/)
     let tempHotel = new Hotel(request.fields.name,request.fields.city);
-    hotelCollection.add(tempHotel);
-    console.log("You have just added "+tempHotel)
+    hotelCollection.hotels.add(tempHotel);
+    //console.log("You have just added "+tempHotel)
     response.sendFile("index.html", {root: __dirname+"/files"});
 });
 
-app.get("/hotels", function(request,response){//waiting for a get request to the end url (/hotels)
+app.get("/hotels", function(request,response){//waiting for a get request to the end url (/hotels) once it gets a request it sends the hotelCollection obj
     response.send(hotelCollection);
 })
 
