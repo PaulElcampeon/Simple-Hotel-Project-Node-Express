@@ -29,7 +29,19 @@
         <br>
 
         <div id="hotel-container"></div>
-        <ul id="authors"></ul>
+
+        <div id="reviewFormDiv">
+            <form id="reviewForm" action="" Method="POST">
+                <h1>Review</h1>
+                <h3>Rating</h3>
+                <input type="number" name="rating"><br>
+                <h3>Comments</h3>
+                <textarea rows="4" cols="50" name="comment" form="reviewForm"></textarea><br><br>
+                <input type="submit" value="SUBMIT">
+                <input id="hotelNameHolder" type="hidden" name="hotelname">
+            </form>
+        </div>
+
     </div>
     
     

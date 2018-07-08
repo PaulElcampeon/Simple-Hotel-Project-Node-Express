@@ -26,15 +26,26 @@ body{
     border:5px solid black;
     padding:30px;
 }
+.post>button{
+    padding:5px;
+    width:100%;
+}
 
 #btn1{
+    margin:auto;
+    padding:10px;
+}
 
-    margin: auto;
+#hotel-container{
+    margin:auto;
+    display:flex;
+    padding:10px;
 
 }
 
 .post{
     border:5px solid black;
-
+    margin:20px;
+    padding:0px;
 
 }
