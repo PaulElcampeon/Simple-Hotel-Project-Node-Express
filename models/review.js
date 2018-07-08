@@ -6,11 +6,6 @@ class Review {
         var n = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
         this.date = n;
         this.ratingAsStars = this.ratingAsStars();
-        //var _n = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-        //var _date = n;
-        // this.getDate = ()=>{
-        //     return _n;
-        // }
     }
     
     ratingAsStars(){

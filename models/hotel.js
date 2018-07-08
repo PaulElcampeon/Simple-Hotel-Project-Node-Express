@@ -4,7 +4,7 @@ class Hotel {
         this.city = city
         this.reviewList = [];
         this.reviewCount = 0
-        this.averageRating =0;
+        this.averageRating = 0;
         this.urlSlug = this.createUrlSlug();
         //this.averageRatingAsStars = this.averageRatingAsStars();
     }
@@ -22,16 +22,14 @@ class Hotel {
     }
     
     calculateRating(){
-        var avgRate=0;
+        let avgRate=0;
         if(this.reviewList.length > 0){
             for(let i=0; i<this.reviewList.length; i++){
                 avgRate += this.reviewList[i].rating;
                 }
-                avgRate=avgRate/this.reviewList.length;
+                avgRate = avgRate/this.reviewList.length;
         }
-        this.averageRating =avgRate;
-        return avgRate;
-
+        this.averageRating = avgRate;
     }
     
     averageRatingAsStars(){

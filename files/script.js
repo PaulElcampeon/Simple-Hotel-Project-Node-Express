@@ -1,51 +1,39 @@
 
 document.getElementById("reviewFormDiv").style.display="none";
 
-document.getElementById("btn1").addEventListener("click",()=>{
+document.getElementById("btn1").addEventListener("click",()=>{//getting a list of all the hotels
     getHotels("/hotels");
 });
 
-function getHotels(url){//makes a call to the server to get a list of hotels within the hotelCollection obj
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////GETTING LIST OF HOTEL DATA//////////////////////////////////////////////////////////////////
+function getHotels(url){
     fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
         response.json().then(function (json){
+            console.log("getting hotels, this is what we recieved back"+json)
             addHotelsToPage(json);
-
     });
 })
     .catch(function (err) {console.error(err)});
 }
 
-function getHotel(url){//makes a call to the server to get a particular hotel in the hotelCollection obj
-    fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
-        response.json().then(function (json) {
-            addHotelToPage(json);
-    });
-})
-    .catch(function (err) {console.error(err)});
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////DYNAMICALLY ADDING HOTELS TO PAGE////////////////////////////////////////////////////////////
+function addHotelsToPage (data) {
+    document.getElementById("hotel-container").innerHTML="";//emptying the div we will be putting our data in
+    document.getElementById("reviewList").style.display="none"//hiding the review list less clutter the better
 
-
-function deleteHotel(url){//makes a call to the server to delete  a particular hotel in the hotelCollection obj
-     fetch(url, {method: 'DELETE'}).then(function (response) {//response is the data we received from the GET request
-         response.json().then(function (json) {
-             addHotelsToPage(json)
-     });
- })
-     .catch(function (err) {console.error(err)});
- }
-
-
-function addHotelsToPage (data) {//function to append the data received from the response from the getHotels() get call
-    document.getElementById("hotel-container").innerHTML="";
-    for (let hotel of data.hotels){
+    for (let hotel of data){
             let postDiv         = document.createElement('div');
             let postText        = document.createElement('p');
             let btnGet          = document.createElement("button");
             let btnDELETE       = document.createElement("button");
-            let btnAddReview    = document.createElement("button");
+            let btnReviews      = document.createElement("button");
+            let addReview       = document.createElement("button");
             let thumbnail       = document.createElement('img');
             let break1          = document.createElement("br");
             let break2          = document.createElement("br");
+            let break3          = document.createElement("br");
             let postContainer   = document.getElementById('hotel-container');
 
             thumbnail.src = "/images/hotel.gif";
@@ -54,7 +42,7 @@ function addHotelsToPage (data) {//function to append the data received from the
             
             btnGet.innerHTML = "MORE"
             btnGet.addEventListener("click", ()=>{//adding eventlisteners to the button so that user can retrieve this particular hotel on its own
-                getHotel("/hotels/"+hotel.urlSlug)
+                getHotel("/hotels/"+hotel.urlSlug);
             });
             
             btnDELETE.innerHTML = "DELETE"
@@ -65,9 +53,15 @@ function addHotelsToPage (data) {//function to append the data received from the
                 }
             });
 
-            btnAddReview.innerHTML = "ADD REVIEW"
-            btnAddReview.addEventListener("click",()=>{//adding eventlisteners to the button so that user can make a review of this particular hotel
-                addReview("hotels/"+hotel.urlSlug, postText.innerHTML,hotel.name);
+            btnReviews.innerHTML = "REVIEWS"
+            btnReviews.addEventListener("click",()=>{//adding eventlisteners to the button so that user can make a review of this particular hotel
+                getHotel("/hotels/"+hotel.urlSlug);
+                getReviews("/hotels/"+hotel.urlSlug+"/reviews");
+            })
+
+            addReview.innerHTML = "ADD REVIEW"
+            addReview.addEventListener("click",()=>{//adding eventlisteners to the button so that user can make a review of this particular hotel
+                reviewPage("hotels/"+hotel.urlSlug, hotel.name);
             })
 
             postDiv.className = "post";
@@ -77,56 +71,71 @@ function addHotelsToPage (data) {//function to append the data received from the
             postDiv.appendChild(break1)
             postDiv.appendChild(btnDELETE);
             postDiv.appendChild(break2)
-            postDiv.appendChild(btnAddReview);
+            postDiv.appendChild(btnReviews);
+            postDiv.appendChild(break3)
+            postDiv.appendChild(addReview);
             postContainer.appendChild(postDiv);
     }
 }
 
-function addHotelToPage (data) {//function to append the data received from the response from the getHotels() get call
-    document.getElementById("hotel-container").innerHTML="";
-    
-    let postDiv         = document.createElement('div');
-    let postText        = document.createElement('p');
-    // let btnGet          = document.createElement("button");
-    // let btnDELETE       = document.createElement("button");
-    let thumbnail       = document.createElement('img');
-    let postContainer   = document.getElementById('hotel-container');
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////GET A SINGLE HOTEL FROM LIST AND DISPLAY IT (GET CALL FUNC)//////////////////////////////////
+function getHotel(url){
+    fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
+        response.json().then(function (json) {
+            addHotelsToPage(json);
+    });
+})
+    .catch(function (err) {console.error(err)});
+}
 
-    thumbnail.src = "/images/hotel.gif";
-    thumbnail.className = "thumbnail";
-    postText.innerHTML = "Name: "+data.name+"<br>Location: "+data.city;
-            
-    // btnGet.innerHTML = "MORE"
-    // btnGet.addEventListener("click", ()=>{
-    //     getHotel("/hotels/"+data.urlSlug)
-    // });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////DELETE HOTEL FROM LIST (DELETE CALL FUNC)/////////////////////////////////////////////////////
+function deleteHotel(url){
+     fetch(url, {method: 'DELETE'}).then(function (response) {//response is the data we received from the GET request
+         response.json().then(function (json) {
+             addHotelsToPage(json)
+     });
+ })
+     .catch(function (err) {console.error(err)});
+ }
 
-    // btnDELETE.innerHTML = "DELETE"
-    // btnDELETE.addEventListener("click", ()=>{
-    //     deleteHotel("/hotels/"+data.urlSlug)
-    // });
-
-    postDiv.className = "post";
-    postDiv.appendChild(thumbnail);
-    postDiv.appendChild(postText);
-    // postDiv.appendChild(btnGet);
-    // postDiv.appendChild(btnDELETE);
-    postContainer.appendChild(postDiv);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////RETURNS REVIEWS OF A PARTICULAR HOTEL (GET CALL FUNC)/////////////////////////////////////////
+function getReviews(url){
+    fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
+        response.json().then(function (json) {
+        console.log(json)    
+        showReviews(json)
+    });
+})
+    .catch(function (err) {console.error(err)});
 }
 
 
-function addReview(url,postText,hotelName){
-    // console.log(postText);
-    let arrOfPosts = document.getElementsByClassName("post");//array of divs with the post class name
-    for(let singlePost of arrOfPosts){
-        // console.log(y.children[1].innerHTML)
-        if(postText != singlePost.children[1].innerHTML){
-            // console.log(singlePost);
-            singlePost.style.display="none";
-        }
-    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////DYNAMICALLY ADDS THE REVIEWS OF A HOTEL TO THE SCREEN///////////////////////////////////////
+function showReviews(reviews){
+    document.getElementById("reviewList").innerHTML = "";
+    for(let singleReview of reviews){
+        let postDiv         = document.createElement('div');
+        let postText        = document.createElement('p');
+        let review_Form_Div = document.getElementById("reviewList");
 
+        postText.innerHTML = singleReview.rating+"  "+singleReview.text;
+
+        postDiv.className = "reviews";
+        postDiv.appendChild(postText);
+        review_Form_Div.appendChild(postDiv);
+    }
+    document.getElementById("reviewList").style.display="block"//display the review list
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////DISPLAYS THE REVIEW FORM TO THE SCREEN/////////////////////////////////////////////
+function reviewPage(url,hotelName){
     document.getElementById("rateform").style.display="none";//hiding the rateform so the screen doesnt look to cluttered
+    document.getElementById("reviewList").style.display="none"//hiding the reviewList so the screen doesnt look to cluttered
     document.getElementById("reviewFormDiv").style.display="block"//exposing the review form div
     let reviewForm_holder = document.getElementById("reviewForm");
     reviewForm_holder.action="";//always reset when someone clicks the review button
@@ -138,8 +147,30 @@ function addReview(url,postText,hotelName){
     hotel_Name_Holder.value = hotelName//setting the hotelNameHolder input value to the hotel name we are working with so that we can use this in the server
     // console.log(hotelNameHolder);
 
-
-
 }
 
 
+
+
+
+// function hidePostsExcept(postText){
+//     //console.log(postText)
+//     let arrOfPosts = document.getElementsByClassName("post");//array of divs with the post class name
+//     for(let singlePost of arrOfPosts){
+//         // console.log(y.children[1].innerHTML)
+//         if(postText != singlePost.children[1].innerHTML){
+//             // console.log(singlePost);
+//             singlePost.style.display="none";
+//         }
+//     }
+// }
+
+
+// function showPosts(){
+//     document.getElementById("rateform").style.display="block";
+//     document.getElementById("reviewFormDiv").style.display="none"
+//     let arrOfPosts = document.getElementsByClassName("post");//array of divs with the post class name
+//     for(let singlePost of arrOfPosts){
+//             singlePost.style.display="block";
+//     }
+// }
