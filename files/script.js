@@ -10,7 +10,7 @@ document.getElementById("btn1").addEventListener("click",()=>{//getting a list o
 function getHotels(url){
     fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
         response.json().then(function (json){
-            console.log("getting hotels, this is what we recieved back"+json)
+            // console.log("getting hotels, this is what we recieved back"+json)
             addHotelsToPage(json);
     });
 })
@@ -38,7 +38,7 @@ function addHotelsToPage (data) {
 
             thumbnail.src = "/images/hotel.gif";
             thumbnail.className = "thumbnail";
-            postText.innerHTML = "Name: "+hotel.name+"<br>Location: "+hotel.city;
+            postText.innerHTML = "Name: "+hotel.name+"<br>Location: "+hotel.city+"<br> Review count: "+hotel.reviewCount+"<br> Average Rating: "+hotel.averageRating+"<br> UrlSlug: "+hotel.urlSlug;
             
             btnGet.innerHTML = "MORE"
             btnGet.addEventListener("click", ()=>{//adding eventlisteners to the button so that user can retrieve this particular hotel on its own
@@ -105,7 +105,7 @@ function deleteHotel(url){
 function getReviews(url){
     fetch(url, {method: 'GET'}).then(function (response) {//response is the data we received from the GET request
         response.json().then(function (json) {
-        console.log(json)    
+        // console.log(json)    
         showReviews(json)
     });
 })
@@ -115,17 +115,34 @@ function getReviews(url){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////DYNAMICALLY ADDS THE REVIEWS OF A HOTEL TO THE SCREEN///////////////////////////////////////
-function showReviews(reviews){
+function showReviews(hotelAndReviews){
+    console.log(hotelAndReviews);
+    let reviewListX = hotelAndReviews.reviewList;
+    let tempHotel = hotelAndReviews.hotel
+
     document.getElementById("reviewList").innerHTML = "";
-    for(let singleReview of reviews){
+   // for(let singleReview of reviews){
+    for(let i=0; i<reviewListX.length; i++){
         let postDiv         = document.createElement('div');
         let postText        = document.createElement('p');
+        let detailsButton   = document.createElement('button');
         let review_Form_Div = document.getElementById("reviewList");
 
-        postText.innerHTML = singleReview.rating+"  "+singleReview.text;
+        postText.innerHTML = reviewListX[i].rating+"<br> "+reviewListX[i].text+" "+reviewListX[i].date+" "+reviewListX[i].ratingAsStars
+
+        
+        detailsButton.innerHTML = "DETAILS";
+        detailsButton.addEventListener("click",()=>{
+            console.log(tempHotel);
+            console.log(tempHotel[0].urlSlug);
+
+            getReviews("/hotels/"+tempHotel[0].urlSlug+"/reviews/"+i);
+
+        })
 
         postDiv.className = "reviews";
         postDiv.appendChild(postText);
+        postDiv.appendChild(detailsButton);
         review_Form_Div.appendChild(postDiv);
     }
     document.getElementById("reviewList").style.display="block"//display the review list

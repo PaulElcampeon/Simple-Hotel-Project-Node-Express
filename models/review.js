@@ -5,10 +5,10 @@ class Review {
         var d = new Date();
         var n = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
         this.date = n;
-        this.ratingAsStars = this.ratingAsStars();
+        this.ratingAsStars = this.getRatingAsStars();
     }
     
-    ratingAsStars(){
+    getRatingAsStars(){
         let starString ="";
         for(let i=0; i<this.rating; i++){
             starString+="⭐";
@@ -17,6 +17,7 @@ class Review {
     }
 
     toJSON(){
+        // return JSON.stringify(this);
         return this;
     }
 }

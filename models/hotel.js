@@ -6,7 +6,7 @@ class Hotel {
         this.reviewCount = 0
         this.averageRating = 0;
         this.urlSlug = this.createUrlSlug();
-        //this.averageRatingAsStars = this.averageRatingAsStars();
+        this.averageRatingAsStars = this.getAverageRatingAsStars();
     }
 
     addReview(review){
@@ -14,6 +14,7 @@ class Hotel {
         this.reviewList.push(tempReview)
         this.calculateRating();
         this.reviewCount = this.getReviewCount();
+        this.getAverageRatingAsStars();
         return tempReview;
     }
     
@@ -32,12 +33,13 @@ class Hotel {
         this.averageRating = avgRate;
     }
     
-    averageRatingAsStars(){
+    getAverageRatingAsStars(){
+        this.calculateRating();
         let starString ="";
         for(let i=0; i<this.averageRating; i++){
             starString+="⭐";
         }
-        return starString;
+        this.averageRatingAsStars = starString; 
     }
     
     createUrlSlug(){
@@ -48,8 +50,10 @@ class Hotel {
 
 
     toJSON(){
-
-        return this
+        // return JSON.stringify(this)
+        return this;
     }
 }
+
+
 module.exports = Hotel

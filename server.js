@@ -18,19 +18,39 @@ var hotelCollection = new HotelCollection()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////GET SINGLE REVIEW/////////////////////////////////////////////////////////////////////
 app.get(/\/hotels\/.*\/reviews\/\d+/, function(request,response){//waiting for a get request for a single review from a hotel
-    respose.send("GOT Single Hotel Review")
+    // console.log("fuk");
+    // console.log(request.url)
+    let arrayOfRequest = request.url.split("/");
+    // console.log(arrayOfRequest);
+    let tempUrlSlug = arrayOfRequest[2]
+    let reviewNumber = arrayOfRequest[4]
+
+    // console.log(tempUrlSlug);
+    let tempReviewList = hotelCollection.getReviewsOfHotel(tempUrlSlug);
+    let tempHotel = hotelCollection.getHotelSpecified(tempUrlSlug);
+
+    let tempSpecificReview = [];
+    tempSpecificReview.push(tempReviewList[reviewNumber]);
+
+    console.log(tempSpecificReview)
+    console.log(tempHotel);
+    //console.log(tempReviewList);
+    let tempObj ={"hotel":tempHotel, "reviewList":tempSpecificReview}
+    console.log(tempObj);
+    response.send(tempObj);
+    response.send("GOT Single Hotel Review")
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////DELETE SINGLE REVIEW/////////////////////////////////////////////////////////////////////
 app.delete(/\/hotels\/.*\/reviews\/\d+/, function(request,response){//waiting for a delete request to delete a single review from a hotel
-    respose.send("DELETED Hotel Review")
+    response.send("DELETED Hotel Review")
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////AMEND SINGLE REVIEW/////////////////////////////////////////////////////////////////////
 app.patch(/\/hotels\/.*\/reviews\/\d+/, function(request,response){//waiting for a patch request to amend a single review from a hotel
-    respose.send("AMENDED Single Hotel Review")
+    response.send("AMENDED Single Hotel Review")
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,9 +81,13 @@ app.get(/\/hotels\/.*\/reviews/, function(request,response){//waiting for a post
     let arrayOfRequest = request.url.split("/");
     let tempUrlSlug = arrayOfRequest[2]
     console.log(tempUrlSlug);
-    let tempReviewList = hotelCollection.getReviewsOfHotel(tempUrlSlug)
+    let tempReviewList = hotelCollection.getReviewsOfHotel(tempUrlSlug);
+    let tempHotel = hotelCollection.getHotelSpecified(tempUrlSlug);
+    console.log(tempHotel);
     console.log(tempReviewList);
-    response.send(tempReviewList);
+    let tempObj ={"hotel":tempHotel, "reviewList":tempReviewList}
+    console.log(tempObj);
+    response.send(tempObj);
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
