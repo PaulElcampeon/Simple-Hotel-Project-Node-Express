@@ -18,8 +18,6 @@ var hotelCollection = new HotelCollection()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////GET SINGLE REVIEW/////////////////////////////////////////////////////////////////////
 app.get(/\/hotels\/.*\/reviews\/\d+/, function(request,response){//waiting for a get request for a single review from a hotel
-    // console.log("fuk");
-    // console.log(request.url)
     let arrayOfRequest = request.url.split("/");
     // console.log(arrayOfRequest);
     let tempUrlSlug = arrayOfRequest[2]
@@ -63,14 +61,21 @@ app.post(/\/hotels\/.*\/reviews/, function(request,response){//waiting for a pos
    
     let reviewHolder = new Review(ratings,comment);//creating a new review passing on the info received in the post
 
-    hotelCollection.hotels = hotelCollection.hotels.filter(function(obj) {//adding review to the correct hotel
-        if(obj.name == hotelName){
-            console.log("we have a match");
-            obj.addReview(reviewHolder)
-            console.log(obj)
+    for(let hotel of hotelCollection.hotels){
+        if(hotel.name == hotelName){
+            hotel.addReview(reviewHolder);
+            //console.log(hotel.averageRating)
         }
-        return obj;
-      });
+    }
+
+    // hotelCollection.hotels = hotelCollection.hotels.filter(function(obj) {//adding review to the correct hotel
+    //     if(obj.name == hotelName){
+    //         console.log("we have a match");
+    //         obj.addReview(reviewHolder)
+    //         console.log(obj)
+    //     }
+    //     return obj;
+    //   });
     
       response.redirect("/")
 });
@@ -82,7 +87,7 @@ app.get(/\/hotels\/.*\/reviews/, function(request,response){//waiting for a post
     let tempUrlSlug = arrayOfRequest[2]
     console.log(tempUrlSlug);
     let tempReviewList = hotelCollection.getReviewsOfHotel(tempUrlSlug);
-    let tempHotel = hotelCollection.getHotelSpecified(tempUrlSlug);
+    let tempHotel = hotelCollection.getHotelSpecified("/hotels/"+tempUrlSlug);//have to add the /hotels/ to the urlslug as the gethotelspecified method requires the url to be in this format when comparing 
     console.log(tempHotel);
     console.log(tempReviewList);
     let tempObj ={"hotel":tempHotel, "reviewList":tempReviewList}

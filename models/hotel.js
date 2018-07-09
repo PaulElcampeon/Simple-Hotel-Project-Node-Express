@@ -6,14 +6,14 @@ class Hotel {
         this.reviewCount = 0
         this.averageRating = 0;
         this.urlSlug = this.createUrlSlug();
-        this.averageRatingAsStars = this.getAverageRatingAsStars();
+        this.averageRatingAsStars;
     }
 
     addReview(review){
         let tempReview = review
         this.reviewList.push(tempReview)
-        this.calculateRating();
         this.reviewCount = this.getReviewCount();
+        this.calculateRating();
         this.getAverageRatingAsStars();
         return tempReview;
     }
@@ -23,18 +23,22 @@ class Hotel {
     }
     
     calculateRating(){
-        let avgRate=0;
-        if(this.reviewList.length > 0){
-            for(let i=0; i<this.reviewList.length; i++){
-                avgRate += this.reviewList[i].rating;
-                }
-                avgRate = avgRate/this.reviewList.length;
+        let sum =0;
+        for(let review of this.reviewList){
+            sum+=parseInt(review.rating);
         }
-        this.averageRating = avgRate;
+        if(sum == 0){
+            this.averageRating = 0
+        }else{
+            this.averageRating = sum/(this.reviewCount)
+            console.log(sum);
+            console.log(this.averageRating);
+            console.log(this.reviewCount);
+        }
+
     }
     
     getAverageRatingAsStars(){
-        this.calculateRating();
         let starString ="";
         for(let i=0; i<this.averageRating; i++){
             starString+="⭐";

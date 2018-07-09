@@ -116,19 +116,18 @@ function getReviews(url){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////DYNAMICALLY ADDS THE REVIEWS OF A HOTEL TO THE SCREEN///////////////////////////////////////
 function showReviews(hotelAndReviews){
-    console.log(hotelAndReviews);
+    // console.log(hotelAndReviews);
     let reviewListX = hotelAndReviews.reviewList;
     let tempHotel = hotelAndReviews.hotel
 
     document.getElementById("reviewList").innerHTML = "";
-   // for(let singleReview of reviews){
     for(let i=0; i<reviewListX.length; i++){
         let postDiv         = document.createElement('div');
         let postText        = document.createElement('p');
         let detailsButton   = document.createElement('button');
         let review_Form_Div = document.getElementById("reviewList");
 
-        postText.innerHTML = reviewListX[i].rating+"<br> "+reviewListX[i].text+" "+reviewListX[i].date+" "+reviewListX[i].ratingAsStars
+        postText.innerHTML = "Rating: "+reviewListX[i].rating+"<br> Comment: "+reviewListX[i].text+"<br> Date: "+reviewListX[i].date+"<br> Rating: "+reviewListX[i].ratingAsStars
 
         
         detailsButton.innerHTML = "DETAILS";
